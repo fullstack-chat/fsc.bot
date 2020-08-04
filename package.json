@@ -1,0 +1,24 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "set NODE_ENV=dev&&nodemon src/app.js --ignore db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "azure-storage": "^2.10.3",
+    "custom-env": "^2.0.1",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "db.json"
+    ]
+  }
+}
