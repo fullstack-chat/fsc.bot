@@ -1,3 +1,5 @@
+const { asyncForEach } = require('./helpers')
+
 exports.isMod = async function (message, userId) {
   let modIds = message.guild.members.cache
     .array()
