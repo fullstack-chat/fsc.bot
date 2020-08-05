@@ -19,6 +19,11 @@ exports.getXpForUserId = function(userId) {
   return data[userId].currentXp
 }
 
+exports.getLevelForUserId = function (userId) {
+  let currentXp = data[userId].currentXp
+  return getLevelByXp(currentXp)
+}
+
 exports.logXp = async function (message, userId, username) {
   console.log(`Logging message for ${username}`)
   let currentTimestamp = Date.now()
