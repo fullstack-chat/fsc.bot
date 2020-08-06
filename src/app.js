@@ -3,6 +3,8 @@ console.log('Starting with env: ', process.env)
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const scheduler = require('@brianmmdev/script-scheduler')
+
 const xpService = require('./services/xpService')
 const portfolioService = require('./services/portfolioService')
 const security = require('./security')
@@ -55,3 +57,7 @@ client.on("message", async (message) => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+// Setup scheduled scripts
+const baseDir = `${__dirname}/scripts/`
+scheduler.run(baseDir)
