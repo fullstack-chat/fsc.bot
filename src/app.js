@@ -5,6 +5,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const scheduler = require('@brianmmdev/script-scheduler')
 
+const azureTableService = require('./services/azureTableService')
 const xpService = require('./services/xpService')
 const portfolioService = require('./services/portfolioService')
 const security = require('./security')
@@ -14,6 +15,7 @@ let commands = {}
 
 client.on("ready", async () => {
   try {
+    await azureTableService.init()
     await xpService.init()
     await portfolioService.init()
     commands = await parseCommands('./src/commands')

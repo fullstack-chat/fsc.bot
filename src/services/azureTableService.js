@@ -1,7 +1,11 @@
 
 const azure = require('azure-storage');
 
-const tableSvc = azure.createTableService(process.env.CONNECTION_STRING);
+let tableSvc;
+
+exports.init = async function () {
+  tableSvc = azure.createTableService(process.env.CONNECTION_STRING);
+}
 
 exports.fetch = async function (rowKey, initData)  {
   return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-const tableService = require('./azureTableService')
+const tableService = require('./azureTableService');
 
 const twentyFourHoursInMs = 86400000
 const fiveMinInMs = 300000;
@@ -36,13 +36,14 @@ exports.logXp = async function (message, userId, username) {
       lastXpAppliedTimestamp: currentTimestamp,
       currentXp: 0,
       multiplier: 1,
-      username: username
+      username: username,
+      penaltyCount: 0
     }
   }
 
   // Clear penalties
-  if(user.penaltyCount && user.penaltyCount > 0) {
-    delete user.penaltyCount
+  if(!ser.penaltyCount || user.penaltyCount > 0) {
+    user.penaltyCount = 0
   }
   
   // Five min timeout
@@ -59,14 +60,17 @@ exports.logXp = async function (message, userId, username) {
     }
     let newXp = user.currentXp + user.multiplier
     console.log(`Adding XP, was ${user.currentXp}, now is ${newXp}`)
+    
     // actually apply the xp
     let levelResults = processXpLevel(user.currentXp, newXp)
     if(levelResults.isLeveledUp) {
       message.channel.send(`🔼 **${username}** is now level **${levelResults.currentLevel}**!`)
     }
+
     user.currentXp = newXp
     user.lastXpAppliedTimestamp = currentTimestamp
     data[userId] = user
+    
     await save()
   } else {
     console.log("5 min timeout not hit, ignoring...")
@@ -90,69 +94,75 @@ const getLevelByXp = function (xp) {
   return Math.floor(levelUpConst * Math.sqrt(xp))
 }
 
-const processDecrementXpInterval = function() {
+/**
+ * Calculates the XP required to get to the specified level
+ * @returns {Number} The XP required
+ * @param {Number} level - The level to calculate the required XP for
+ */
+exports.getXpByLevel = function (level) {
+  return Math.ceil((level / levelUpConst)^2)
+}
+
+/**
+ * Scans all users and determines if they should lose XP based on activity.
+ */
+exports.processDecrementXpScript = function() {
   // Get all the users
   let currentTimestamp = Date.now()
   Object.keys(data).forEach(userId => {
-    // Check lastXpAppliedTimestamp, if over 3 days, remove 10%
-    // const threeDaysInMs = twentyFourHoursInMs * 3
     let daysSinceContact = (currentTimestamp - lastXpAppliedTimestamp) / twentyFourHoursInMs
 
-    // TODO: compare days since contact with penalty count, just subtract 3
-    if(daysSinceContact > 3 && (!data[userId].penaltyCount || data[userId].penaltyCount === 0)) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 4 && data[userId].penaltyCount === 1) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 5 && data[userId].penaltyCount === 2) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-    
-    if(daysSinceContact > 6 && data[userId].penaltyCount === 3) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-    
-    if(daysSinceContact > 7 && data[userId].penaltyCount === 4) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-    
-    if(daysSinceContact > 8 && data[userId].penaltyCount === 5) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 9 && data[userId].penaltyCount === 6) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 10 && data[userId].penaltyCount === 7) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 11 && data[userId].penaltyCount === 8) {
-      data[userId].currentXp = data[userId].currentXp * 0.9
-    }
-
-    if(daysSinceContact > 12 && data[userId].penaltyCount === 9) {
-      data[userId].currentXp = 0
+    if(exports.shouldDecrementXp(daysSinceContact, data[userId].penaltyCount)) {
+      let decrementedXp = calculateDecrementedXp()
+      console.log(`INFO ONLY: Decrementing XP for user ${data[userId].username} from ${data[userId].currentXp} to ${decrementedXp}...`)
+      // data[userId].penaltyCount = decrementedXp
+      if(data[userId].penaltyCount) {
+        data[userId].penaltyCount++
+      } else {
+        data[userId].penaltyCount = 1
+      }
     }
   })
 }
 
-const decrementXp = function (userId, daysSinceContact, isBeingReset) {
-  // let daysSinceContactInclPenalty = daysSinceContact * 
-  if(isBeingReset) {
-    console.log(`User ${userId} inactive for ${daysSinceContact}, xp is rest`)
-  } else {
-    console.log(`User ${userId} inactive for ${daysSinceContact}, xp is now ${data[userId].currentXp * 0.9}`)
+/**
+ * Calculates the new XP for the user
+ * @returns {Number} the new XP for the user
+ * @param  {Number} currentXp - The users current XP
+ * @param  {Number} daysSinceContact - Number of days since we last heard from the user
+ */
+const calculateDecrementedXp = function (currentXp, daysSinceContact) {
+  let decrementMultiplier = exports.calculateDecrementMultiplier(daysSinceContact)
+  return currentXp * decrementMultiplier
+}
+
+/**
+ * Calculates the multiplier for which the users XP should be decremented by
+ * @returns {Number} the calculated multiplier 
+ * @param  {Number} daysSinceContact - Number of days since we last heard from the user
+ */
+exports.calculateDecrementMultiplier = function (daysSinceContact) {
+  let difference = ((daysSinceContact - 2) * 0.1).toFixed(1)
+  return (1 - difference).toFixed(1)
+}
+
+/**
+ * Determines if a user should have their XP decremented
+ * @returns {Boolean}
+ * @param  {Number} daysSinceContact - Number of days since we last heard from the user
+ * @param  {Number} penaltyCount - The users current penalty count
+ */
+exports.shouldDecrementXp = function (daysSinceContact, penaltyCount) {
+  if(!penaltyCount || penaltyCount == undefined || penaltyCount == null) {
+    penaltyCount = 0
   }
-  // if(isBeingReset) {
-  //   data[userId].currentXp = 0
-  // } else {
-  //   data[userId].currentXp = data[userId].currentXp * 0.9
-  // }
+  daysSinceContact = Math.floor(daysSinceContact)
+
+  if(daysSinceContact > 12) {
+    return false;
+  }
+
+  return daysSinceContact === (penaltyCount + 3)
 }
 
   
