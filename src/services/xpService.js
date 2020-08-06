@@ -42,7 +42,7 @@ exports.logXp = async function (message, userId, username) {
   }
 
   // Clear penalties
-  if(!ser.penaltyCount || user.penaltyCount > 0) {
+  if(!user.penaltyCount || user.penaltyCount > 0) {
     user.penaltyCount = 0
   }
   
