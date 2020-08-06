@@ -5,6 +5,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    ".env*": true
-  },
+    ".env.dev": true,
+    ".env": true,
+  }
 }
