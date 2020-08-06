@@ -4,13 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "set NODE_ENV=dev&&nodemon src/app.js --ignore db.json"
+    "dev": "set NODE_ENV=dev&&nodemon src/app.js --ignore db.json",
+    "test": "set NODE_ENV=test&&mocha tests/unit/**/*.spec.js",
+    "test-integration": "set NODE_ENV=dev&&mocha tests/integration/**/*.spec.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "azure-storage": "^2.10.3",
     "custom-env": "^2.0.1",
     "discord.js": "^12.2.0",
@@ -20,5 +22,9 @@
     "ignore": [
       "db.json"
     ]
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1"
   }
 }
