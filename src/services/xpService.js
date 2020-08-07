@@ -90,6 +90,10 @@ const processXpLevel = function (previousXp, newXp) {
   }
 }
 
+/**
+ * Calculates the level that the XP is currently
+ * @param  {Number} xp - The XP to calculate
+ */
 const getLevelByXp = function (xp) {
   return Math.floor(levelUpConst * Math.sqrt(xp))
 }
