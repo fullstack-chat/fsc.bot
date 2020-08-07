@@ -114,7 +114,7 @@ exports.processDecrementXpScript = function() {
   // Get all the users
   let currentTimestamp = Date.now()
   Object.keys(data).forEach(userId => {
-    let daysSinceContact = (currentTimestamp - lastXpAppliedTimestamp) / twentyFourHoursInMs
+    let daysSinceContact = (currentTimestamp - data[userId].lastXpAppliedTimestamp) / twentyFourHoursInMs
 
     if(exports.shouldDecrementXp(daysSinceContact, data[userId].penaltyCount)) {
       let decrementedXp = calculateDecrementedXp()
