@@ -13,9 +13,11 @@ exports.parseCommands = async function () {
   const jsFiles = files.filter(file => file.endsWith('.js'))
   jsFiles.forEach(commandFile => {
     const imported = require(`./commands/${commandFile}`)
-    if (imported.command && imported.fn) {
-      commands[imported.command] = imported.fn;
+    if (imported.command && imported.fn && imported.isEnabled) {
+      commands[imported.command] = imported
     }
   })
+  console.log('Registered commands are:\n')
+  Object.keys(commands).forEach(c => console.log(c))
   return commands;
 }

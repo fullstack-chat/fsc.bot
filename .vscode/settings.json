@@ -4,8 +4,6 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/.DS_Store": true,
-    ".env.dev": true,
-    ".env": true,
+    "**/.DS_Store": true
   }
 }

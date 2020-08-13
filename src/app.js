@@ -45,16 +45,49 @@ client.on("message", async (message) => {
   if(message.content.startsWith(process.env.PREFIX)) {
     const cmd = message.content.split(' ')[1];
 
+    // Handle global `help` cmd
+    if(cmd && cmd.toLowerCase() === 'help') {
+      let helpResponse = "**fsc.bot Help**\n'!fsc' is used to call fsc.bot, followed by one of these commands:\n\n"
+      Object.keys(commands).forEach(c => {
+        if(commands[c].helpText) {
+          helpResponse += `**!fsc ${commands[c].command}:**`
+          helpResponse += '\n```yaml'
+          helpResponse += `${commands[c].helpText}\n`
+          helpResponse += '```\n'
+        }
+      })
+      
+      await message.author.send(helpResponse)
+      await message.delete()
+      return;
+    }
+
+    // Return on unknown commands
     if (commands[cmd] === undefined) {
       console.log('Unable to find command', cmd)
-      console.log('Commands are:\n')
-      Object.keys(commands).forEach(c => console.log(c))
       return
     }
 
-    console.log('cmd is', cmd)
+    // Handle command-based help
+    const subCommand = message.content.split(' ')[2]
+    if(subCommand && subCommand.toLowerCase() === 'help') {
+      if(commands[cmd].helpText) {
+        let helpResponse = `**!fsc ${commands[cmd].command} help:**`
+        helpResponse += '\n```yaml'
+        helpResponse += `${commands[cmd].helpText}\n`
+        helpResponse += '```\n'
+        await message.author.send(helpResponse)
+        await message.delete()
+        return
+      }
+    }
 
-    commands[cmd](message);
+    // Handle command
+    await commands[cmd].fn(message);
+
+    if(commands[cmd].shouldCleanup) {
+      await message.delete()
+    }
   }
 });
 

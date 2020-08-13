@@ -1,8 +1,26 @@
 const security = require('../security')
 const portfolioService = require('../services/portfolioService')
 
+const helpText = `
+  Command: portfolio
+  Description: Used to update the managed portfolios message for the server. The managed message is updated automatically by fsc.bot.
+  Subcommands: 
+    - Subcommand: add
+      Description: Allows a member to add or update their portfolio item. Each member is allowed one entry.
+      Examples:
+        - Input: !fsc portfolio add https://brianmorrison.me
+          Output: None directly. Will add or update the members portfolio site in the list.
+    - Subcommand: init
+      Description: Allows admins to initialize a new managed portfolios message in the current channel.
+      Examples:
+        - Input: !fsc portfolio init
+          Output: **Member Portfolios:** (This is the start of the managed message.)
+`
+
 module.exports = {
   command: 'portfolio',
+  isEnabled: true,
+  helpText,
   shouldCleanup: true,
   fn: async msg => {
     let args = msg.content.split(' ')
@@ -22,7 +40,5 @@ module.exports = {
         msg.author.send("You are not permitted to use the '!fsc portfolio init' command..")
       }
     }
-    
-    msg.delete()
   }
 }
