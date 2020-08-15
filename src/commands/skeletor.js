@@ -2,7 +2,7 @@ const security = require('../security')
 
 const helpText = `
   Command: skeletor
-  Description: Used to update the managed portfolios message for the server. The managed message is updated automatically by fsc.bot.
+  Description: Skeletor's Secret Sauce.
 `
 
 module.exports = {
