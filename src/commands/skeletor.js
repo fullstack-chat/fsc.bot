@@ -8,12 +8,11 @@ const helpText = `
 module.exports = {
   command: 'skeletor',
   isEnabled: true,
-  helpText,
   shouldCleanup: true,
   fn: async msg => {
     let isMod = await security.isMod(msg, msg.author.id)
     if(isMod) {
-        msg.channel.send("https://tenor.com/view/evil-laugh-laugh-evil-villain-skeletor-gif-4145131")
+        msg.author.send("https://media.giphy.com/media/g7GKcSzwQfugw/giphy.gif")
     } else {
       return 
     }
