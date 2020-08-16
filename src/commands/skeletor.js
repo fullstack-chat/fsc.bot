@@ -12,7 +12,7 @@ module.exports = {
   fn: async msg => {
     let isMod = await security.isMod(msg, msg.author.id)
     if(isMod) {
-        msg.author.send("https://media.giphy.com/media/g7GKcSzwQfugw/giphy.gif")
+        msg.channel.send("https://tenor.com/view/evil-laugh-laugh-evil-villain-skeletor-gif-4145131")
     } else {
       return 
     }
