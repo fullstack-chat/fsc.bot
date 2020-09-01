@@ -99,8 +99,8 @@ exports.getUsersAtOrAboveLevel = async function (level) {
   let xp = exports.getXpByLevel(level)
   let users = []
   Object.keys(data).forEach(key => {
-    if(users[key].currentXp >= xp) {
-      users.push(users[key].username)
+    if(data[key].currentXp >= xp) {
+      users.push(data[key].username)
     }
   })
   return users
