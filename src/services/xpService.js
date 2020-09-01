@@ -94,9 +94,7 @@ const processXpLevel = function (previousXp, newXp) {
  * Returns an array of usernames at or above the given level
  * @param {Number} level
  */
-exports.getUsersAtOrAboveLevel = async function (level) {
-  // convert level to xp
-  let xp = exports.getXpByLevel(level)
+exports.getUsersAtOrAboveXp = function (xp) {
   let users = []
   Object.keys(data).forEach(key => {
     if(data[key].currentXp >= xp) {
@@ -119,9 +117,10 @@ const getLevelByXp = function (xp) {
  * @returns {Number} The XP required
  * @param {Number} level - The level to calculate the required XP for
  */
-exports.getXpByLevel = function (level) {
-  return Math.ceil((level / levelUpConst)^2)
-}
+// TODO: THIS IS BROKEN!!!
+// exports.getXpByLevel = function (level) {
+//   return Math.ceil((level / levelUpConst)^2)
+// }
 
 /**
  * Scans all users and determines if they should lose XP based on activity.
