@@ -6,6 +6,11 @@ exports.asyncForEach = async function (array, callback) {
   }
 }
 
+exports.rng = function (min, max) {
+  var num = Math.random() * (max - min) + min;
+  return Math.floor(num)
+}
+
 exports.parseCommands = async function () {
   const commands = {}
   // TODO: Figure out a better way to parse in commands

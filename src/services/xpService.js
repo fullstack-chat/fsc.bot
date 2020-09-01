@@ -91,6 +91,22 @@ const processXpLevel = function (previousXp, newXp) {
 }
 
 /**
+ * Returns an array of usernames at or above the given level
+ * @param {Number} level
+ */
+exports.getUsersAtOrAboveLevel = async function (level) {
+  // convert level to xp
+  let xp = exports.getXpByLevel(level)
+  let users = []
+  Object.keys(data).forEach(key => {
+    if(users[key].currentXp >= xp) {
+      users.push(users[key].username)
+    }
+  })
+  return users
+}
+
+/**
  * Calculates the level that the XP is currently
  * @param  {Number} xp - The XP to calculate
  */
