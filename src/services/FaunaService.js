@@ -54,10 +54,10 @@ module.exports = class FaunaService {
           q.Ref(
             q.Collection(collectionName), 
             recordId,
-            {
-              data: updates
-            }
-          )
+          ),
+          {
+            data: updates
+          }
         )
       )
       let recordData = updated.data
