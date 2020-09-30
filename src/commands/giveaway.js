@@ -2,6 +2,7 @@ const security = require('../security')
 const xpService = require('../services/xpService')
 const { rng } = require('../helpers')
 
+//Unnecessary variable?
 const minimumLevel = 5
 
 module.exports = {
@@ -18,7 +19,8 @@ module.exports = {
         let eligibleUsers = xpService.getUsersAtOrAboveXp(157)
         
         //TODO: Figure out a way to dynamically get mod names automatically 
-        eligibleUsers = eligibleUsers.filter(el => el !== 'brianmm02' && el !== 'Diamond')
+        //Updated to check & remove if a user has the role "Mod" in their list of roles. Needs testing.
+        eligibleUsers = eligibleUsers.filter(user => user._roles.contains("Mod"))
 
         let winnerIdx = rng(0, eligibleUsers.length)
         msg.channel.send(`Selected giveaway winner is **${eligibleUsers[winnerIdx]}**`)

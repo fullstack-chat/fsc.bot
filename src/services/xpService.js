@@ -50,16 +50,11 @@ exports.logXp = async function (message, userId, username) {
   if(isNew || (currentTimestamp - user.lastXpAppliedTimestamp) > fiveMinInMs) {
     // If its been longer than 24 hours since we heard from you, reset the multiplier
     if ((currentTimestamp - user.lastXpAppliedTimestamp) > twentyFourHoursInMs) {
-      console.log('Multipler getting reset...')
       user.multiplier = 1
     } else if(user.lastXpAppliedTimestamp !== currentTimestamp && user.multiplier < 5) {
-      console.log('Bumping multiplier!!!')
       user.multiplier++
-    } else {
-      console.log('Maxium multiplier detected, go go user!')
     }
     let newXp = user.currentXp + user.multiplier
-    console.log(`Adding XP, was ${user.currentXp}, now is ${newXp}`)
     
     // actually apply the xp
     let levelResults = processXpLevel(user.currentXp, newXp)
@@ -72,8 +67,6 @@ exports.logXp = async function (message, userId, username) {
     data[userId] = user
     
     await save()
-  } else {
-    console.log("5 min timeout not hit, ignoring...")
   }
 }
 
@@ -133,7 +126,6 @@ exports.processDecrementXpScript = function() {
 
     if(exports.shouldDecrementXp(daysSinceContact, data[userId].penaltyCount)) {
       let decrementedXp = calculateDecrementedXp()
-      console.log(`INFO ONLY: Decrementing XP for user ${data[userId].username} from ${data[userId].currentXp} to ${decrementedXp}...`)
       // data[userId].penaltyCount = decrementedXp
       if(data[userId].penaltyCount) {
         data[userId].penaltyCount++
