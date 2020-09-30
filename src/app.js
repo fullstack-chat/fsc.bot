@@ -1,6 +1,5 @@
 require('custom-env').env(true)
-// console.log('Starting with env: ', process.env)
-
+const http = require('http');
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const scheduler = require('@brianmmdev/script-scheduler')
@@ -96,3 +95,12 @@ client.login(process.env.BOT_TOKEN);
 // Setup scheduled scripts
 const baseDir = `${__dirname}/scripts/`
 scheduler.run(baseDir)
+
+// Bind to PORT for keepalive in Heroku
+http.createServer(function (req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'text/html'
+  });
+  res.write('ok');
+  res.end();
+}).listen(process.env.PORT || 8080);
