@@ -1,5 +1,5 @@
 require('custom-env').env(true)
-console.log('Starting with env: ', process.env)
+// console.log('Starting with env: ', process.env)
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
