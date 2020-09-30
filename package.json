@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "set NODE_ENV=dev&&nodemon src/app.js --ignore db.json",
     "test": "set NODE_ENV=test&&mocha tests/unit/**/*.spec.js",
     "test-integration": "set NODE_ENV=dev&&mocha tests/integration/**/*.spec.js"
