@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "set NODE_ENV=dev&&nodemon src/app.js --ignore db.json",
     "test": "set NODE_ENV=test&&mocha tests/unit/**/*.spec.js",
     "test-integration": "set NODE_ENV=dev&&mocha tests/integration/**/*.spec.js"
@@ -17,7 +18,8 @@
     "azure-storage": "^2.10.3",
     "custom-env": "^2.0.1",
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "faunadb": "^3.0.1"
   },
   "nodemonConfig": {
     "ignore": [

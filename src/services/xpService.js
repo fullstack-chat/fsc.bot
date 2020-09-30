@@ -1,4 +1,5 @@
 const tableService = require('./azureTableService');
+const FaunaService = require('./FaunaService')
 
 const twentyFourHoursInMs = 86400000
 const fiveMinInMs = 300000;
@@ -7,12 +8,37 @@ const rowKey = 'xpdata'
 
 let data = {}
 
+// FaunaDB Implementation
+let _faunaService;
+let collectionName = "fsc-bot-data"
+let indexName = "idxByKey"
+let faunaRecordId;
+let faunaData = {}
+
 exports.init = async function () {
   data = await tableService.fetch(rowKey, data);
+  
+  try {
+    _faunaService = new FaunaService(process.env.FAUNA_SECRET);
+    let record = await _faunaService.getRecordByIndex(indexName, rowKey);
+    faunaRecordId = record.id
+    faunaData = record.document
+  } catch(err) {
+    console.error(`xpService.init: ${err.toString()}`)
+  }
 }
 
 const save = async function () {
-  await tableService.save(rowKey, data)
+  await tableService.save(rowKey, data);
+
+  try {
+    faunaData = data;
+    await _faunaService.updateRecord(collectionName, faunaRecordId, {
+      document: faunaData
+    })
+  } catch(err) {
+    console.error(`xpService.save: ${err.toString()}`)
+  }
 }
 
 exports.getXpForUserId = function(userId) {
@@ -127,8 +153,7 @@ exports.processDecrementXpScript = function() {
     if(exports.shouldDecrementXp(daysSinceContact, data[userId].penaltyCount)) {
       let decrementedXp = calculateDecrementedXp()
       console.log(`INFO ONLY: Decrementing XP for user ${data[userId].username} from ${data[userId].currentXp} to ${decrementedXp}...`)
-      
-      // data[userId].penaltyCount = decrementedXp
+      // data[userId].currentXp = decrementedXp
       if(data[userId].penaltyCount) {
         data[userId].penaltyCount++
       } else {
