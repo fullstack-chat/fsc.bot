@@ -21,7 +21,7 @@ exports.init = async function () {
   try {
     _faunaService = new FaunaService(process.env.FAUNA_SECRET);
     let record = await _faunaService.getRecordByIndex(indexName, rowKey);
-    faunaKey = record.id
+    faunaRecordId = record.id
     faunaData = record.document
   } catch(err) {
     console.error(`xpService.init: ${err.toString()}`)
