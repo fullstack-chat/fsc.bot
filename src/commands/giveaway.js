@@ -20,7 +20,7 @@ module.exports = {
         
         //TODO: Figure out a way to dynamically get mod names automatically 
         //Updated to check & remove if a user has the role "Mod" in their list of roles. Needs testing.
-        eligibleUsers = eligibleUsers.filter(user => user._roles.contains("Mod"))
+        eligibleUsers = eligibleUsers.filter(user => user.roles.cache.some(role => role.name === 'Mod'))
 
         let winnerIdx = rng(0, eligibleUsers.length)
         msg.channel.send(`Selected giveaway winner is **${eligibleUsers[winnerIdx]}**`)
