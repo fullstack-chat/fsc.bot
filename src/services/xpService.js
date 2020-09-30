@@ -126,6 +126,8 @@ exports.processDecrementXpScript = function() {
 
     if(exports.shouldDecrementXp(daysSinceContact, data[userId].penaltyCount)) {
       let decrementedXp = calculateDecrementedXp()
+      console.log(`INFO ONLY: Decrementing XP for user ${data[userId].username} from ${data[userId].currentXp} to ${decrementedXp}...`)
+      
       // data[userId].penaltyCount = decrementedXp
       if(data[userId].penaltyCount) {
         data[userId].penaltyCount++
