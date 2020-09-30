@@ -18,7 +18,8 @@
     "azure-storage": "^2.10.3",
     "custom-env": "^2.0.1",
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "faunadb": "^3.0.1"
   },
   "nodemonConfig": {
     "ignore": [
