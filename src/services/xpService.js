@@ -16,25 +16,25 @@ let faunaRecordId;
 let faunaData = {}
 
 exports.init = async function () {
-  data = await tableService.fetch(rowKey, data);
+  // data = await tableService.fetch(rowKey, data);
   
   try {
     _faunaService = new FaunaService(process.env.FAUNA_SECRET);
     let record = await _faunaService.getRecordByIndex(indexName, rowKey);
     faunaRecordId = record.id
-    faunaData = record.document
+    data = record.document
   } catch(err) {
     console.error(`xpService.init: ${err.toString()}`)
   }
 }
 
 const save = async function () {
-  await tableService.save(rowKey, data);
+  // await tableService.save(rowKey, data);
 
   try {
-    faunaData = data;
+    // faunaData = data;
     await _faunaService.updateRecord(collectionName, faunaRecordId, {
-      document: faunaData
+      document: data
     })
   } catch(err) {
     console.error(`xpService.save: ${err.toString()}`)
