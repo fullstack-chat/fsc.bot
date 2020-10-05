@@ -203,4 +203,16 @@ exports.shouldDecrementXp = function (daysSinceContact, penaltyCount) {
   return daysSinceContact === (penaltyCount + 3)
 }
 
-  
+exports.getLeaderboard = function () {
+  let users = []
+  let array = Object.values(data).sort(function(a, b) { return b["currentXP"] - a["currentXP"] })
+
+  //For debugging. Should list users by XP highest - lowest
+  for( i = 0; i < array.length; i++) {
+    console.log(array[i].currentXP + " - " + i)
+  }
+
+  users.push(array.slice(0,4))
+
+  return users
+}
