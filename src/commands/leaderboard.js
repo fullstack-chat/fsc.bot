@@ -18,7 +18,7 @@ module.exports = {
   isEnabled: true,
   helpText,
   fn: async (msg) => {
-    let leaderboard = await xpService.getLeaderboard();
+    let leaderboard = xpService.getLeaderboard();
     if (leaderboard) {
       let embed = {
         embeds: [
