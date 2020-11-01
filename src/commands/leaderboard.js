@@ -1,3 +1,4 @@
+const xpService = require("../services/xpService");
 const Discord = require("discord.js");
 
 const helpText = `
@@ -21,6 +22,7 @@ module.exports = {
     let leaderboard = await xpService.getLeaderboard();
     if (leaderboard) {
       let embed = new Discord.MessageEmbed()
+      
             .setTitle("FSC XP Leaderboard")
             .setDescription(
               `1.    **${leaderboard[0].username}** - ${leaderboard[0].currentXp} **XP**\n
