@@ -19,7 +19,7 @@ module.exports = {
     if (isMod) {
 
       msg.channel.send(
-        `**${username}** has been gifted ${xpAmount} from ${msg.author}`
+        `**${targetUser.username}** has been gifted ${xpAmount} from ${msg.author}`
       );
     } else {
       msg.author.send("You are not permitted to use the '!fsc give' command..");
