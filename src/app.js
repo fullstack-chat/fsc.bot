@@ -12,9 +12,6 @@ const { parseCommands } = require('./helpers')
 
 let commands = {}
 
-let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282') // Fulstack ID
-let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429') // Log channel
-
 client.on("ready", async () => {
   try {
     await azureTableService.init()
@@ -24,14 +21,19 @@ client.on("ready", async () => {
   } catch (err) {
     console.error("Init failed:", err)
   }
-
   console.log(`${client.user.username} is ready!`)
+
+  let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
+  let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
   logChannel.send(`${client.user.username} is ready!`)
 });
 
 client.on("error", (e) => {
   console.log(`${client.user.username} borked: ${e}`);
-  logChannel.send(e) 
+  
+  let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
+  let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
+  logChannel.send(e)
 });
 
 client.on('guildMemberAdd', async member => {
