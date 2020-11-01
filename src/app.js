@@ -12,8 +12,8 @@ const { parseCommands } = require('./helpers')
 
 let commands = {}
 
-let guild = client.guilds.cache.find(guild => guild.name == 'fullstack.chat') // Fulstack ID
-let logChannel = guild.channels.cache.find(channel => channel.name == 'logs') // Log channel
+let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282') // Fulstack ID
+let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429') // Log channel
 
 client.on("ready", async () => {
   try {
