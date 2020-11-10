@@ -5,7 +5,7 @@ module.exports = {
   command: "gift",
   isEnabled: true,
   shouldCleanup: true,
-  fn: async (msg) => {
+  fn: async msg => {
     let args = msg.content.split(" ");
 
     let targetUser = msg.mentions.members.first();
@@ -16,7 +16,7 @@ module.exports = {
       xpService.giftXP(msg, targetUser.id, targetUser.username, newXp)
       msg.channel.send(`**${targetUser.username}** has been gifted ${xpAmount} from ${msg.author}`);
     } else {
-      msg.author.send("You are not permitted to use the '!fsc give' command..");
+      msg.reply("You are not permitted to use the '!fsc gift' command..");
     }
   },
 };
