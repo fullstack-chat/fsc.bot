@@ -8,7 +8,7 @@ module.exports = {
   fn: async (msg) => {
     let args = msg.content.split(" ");
 
-    let targetUser = message.mentions.members.first();
+    let targetUser = msg.mentions.members.first();
     let newXp = args[3];
 
     let isMod = await security.isMod(msg, msg.author.id);
