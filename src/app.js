@@ -22,13 +22,23 @@ client.on("ready", async () => {
     console.error("Init failed:", err)
   }
   console.log(`${client.user.username} is ready!`)
+
+  let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
+  let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
+
+  logChannel.send(`${client.user.username} is ready!`)
 });
 
 client.on("error", (e) => {
   console.log(`${client.user.username} borked: ${e}`);
+  
+  let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
+  let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
+  logChannel.send(e)
 });
 
 client.on('guildMemberAdd', async member => {
+  console.log(`**${member.user.username}** just joined **${member.guild.name}**!`)
   await security.sendModBroadcast(member.guild, `**${member.user.username}** just joined **${member.guild.name}**!`)
 });
 

@@ -1,4 +1,5 @@
 const xpService = require("../services/xpService");
+const Discord = require("discord.js");
 
 const helpText = `
   Command: leaderboard
@@ -18,23 +19,16 @@ module.exports = {
   isEnabled: true,
   helpText,
   fn: async (msg) => {
-    let leaderboard = xpService.getLeaderboard();
+    let leaderboard = await xpService.getLeaderboard();
     if (leaderboard) {
-      let embed = {
-        embeds: [
-          {
-            title: "FSC XP Leaderboard",
-            description:
+      let embed = new Discord.MessageEmbed()
+            .setTitle("FSC XP Leaderboard")
+            .setDescription(
               `1.    **${leaderboard[0].username}** - ${leaderboard[0].currentXp} **XP**\n
               2.   **${leaderboard[1].username}** - ${leaderboard[1].currentXp} **XP**\n
               3.   **${leaderboard[2].username}** - ${leaderboard[2].currentXp} **XP**\n
               4.   **${leaderboard[3].username}** - ${leaderboard[3].currentXp} **XP**\n
-              5.   **${leaderboard[4].username}** - ${leaderboard[4].currentXp} **XP**\n`,
-            color: 4382516,
-            timestamp: "2020-10-02T19:21:00.000Z",
-          },
-        ],
-      };
+              5.   **${leaderboard[4].username}** - ${leaderboard[4].currentXp} **XP**\n`)
 
       msg.reply(embed);
     } else {
