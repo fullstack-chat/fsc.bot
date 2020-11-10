@@ -14,9 +14,7 @@ module.exports = {
   isEnabled: true,
   helpText,
   fn: async msg => {
-    let userName = msg.content.split(' ')[2]
-
-    let user = msg.guild.members.cache.find(member => member.username == userName)
+    let user = msg.mentions.users.first()
 
     let currentXp = xpService.getXpForUserId(user.id)
     if(currentXp) {

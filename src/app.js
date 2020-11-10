@@ -25,6 +25,7 @@ client.on("ready", async () => {
 
   let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
   let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
+
   logChannel.send(`${client.user.username} is ready!`)
 });
 
@@ -37,6 +38,7 @@ client.on("error", (e) => {
 });
 
 client.on('guildMemberAdd', async member => {
+  console.log(`**${member.user.username}** just joined **${member.guild.name}**!`)
   await security.sendModBroadcast(member.guild, `**${member.user.username}** just joined **${member.guild.name}**!`)
 });
 
