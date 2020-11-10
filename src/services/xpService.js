@@ -208,3 +208,49 @@ exports.getLeaderboard = function () {
 
   return array
 }
+
+/**
+ * Determines if a user should have their XP decremented
+ * @param  {Object} message - The message object
+ * @param  {String} userId - The target user's discord ID
+ * @param  {String} username - The target user's username
+ * @param  {Number} xpAmount - The gifted XP amount
+ */
+exports.giftXP = function (message, userId, username, xpAmount) {
+  console.log(`Gifting XP to ${username}`)
+  let currentTimestamp = Date.now()
+  let user = data[userId]
+
+  let newXp = user.currentXp + xpAmount
+
+  if(!user) {
+    console.log('User not found, creating new...')
+    isNew = true;
+    user = {
+      lastXpAppliedTimestamp: currentTimestamp,
+      currentXp: 0,
+      multiplier: 1,
+      username: username,
+      penaltyCount: 0
+    }
+  }
+
+  // Clear penalties
+  if(!user.penaltyCount || user.penaltyCount > 0) {
+    user.penaltyCount = 0
+  }
+
+  
+  let levelResults = processXpLevel(user.currentXp, newXp);
+  if (levelResults.isLeveledUp) {
+    message.channel.send(
+      `🔼 **${username}** is now level **${levelResults.currentLevel}**!`
+    );
+  }
+
+  user.currentXp = newXp;
+  user.lastXpAppliedTimestamp = currentTimestamp;
+  data[userId] = user;
+
+  await save();
+}
