@@ -24,9 +24,9 @@ client.on("ready", async () => {
   console.log(`${client.user.username} is ready!`)
 
   let guild = client.guilds.cache.find(guild => guild.id == '553773331674038282')
-  let logChannel = guild.channels.cache.find(channel => channel.id == '738860914723258429')
+  let general = guild.channels.cache.find(channel => channel.id == '553773331674038284')
 
-  logChannel.send(`${client.user.username} is ready!`)
+  general.send(`Hello World 👋`)
 });
 
 client.on("error", (e) => {
