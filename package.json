@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@brianmmdev/script-scheduler": "^1.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "azure-storage": "^2.10.3",
     "custom-env": "^2.0.1",
     "discord.js": "^12.2.0",
