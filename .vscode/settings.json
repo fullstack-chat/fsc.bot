@@ -5,5 +5,10 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#4F1D29",
+    "titleBar.activeBackground": "#6E2939",
+    "titleBar.activeForeground": "#FEFBFC"
   }
 }

@@ -10,6 +10,8 @@ const portfolioService = require('./services/portfolioService')
 const security = require('./security')
 const { parseCommands } = require('./helpers')
 
+//env test
+
 let commands = {}
 
 client.on("ready", async () => {
