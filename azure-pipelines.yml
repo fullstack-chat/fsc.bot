@@ -15,7 +15,7 @@ steps:
     sshEndpoint: 'Digital Ocean'
     runOptions: 'inline'
     inline: |
-      cd ./fsc.bot
+      cd ./kenobi
       git pull
       pm2 restart 1
     failOnStdErr: false
