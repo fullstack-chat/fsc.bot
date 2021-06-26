@@ -17,6 +17,6 @@ steps:
     inline: |
       cd ./kenobi
       git pull
-      pm2 restart 1
+      pm2 restart 2
     failOnStdErr: false
     readyTimeout: '20000'
